@@ -70,4 +70,4 @@ npm run dev
 ## 📬 সাবমিশন ও লিংক (Submission)
 
 - **Live Link**: [লাইভ সাইট লিংক এখানে দিন]
-- **GitHub Repository Link**: [গিটহাব রিপোজিটরি লিংক এখানে দিন]
+- **GitHub Repository Link**: https://github.com/niaz404/bazar-dor
