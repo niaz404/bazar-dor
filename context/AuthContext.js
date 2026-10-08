@@ -77,15 +77,18 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const signInWithSocial = async (provider) => {
-    const isGoogle = provider === 'Google';
+  const signInWithSocial = async (provider, redirectPath = '/') => {
+    if (provider.toLowerCase() === 'google') {
+      window.location.href = `/api/auth/google?redirect=${encodeURIComponent(redirectPath)}`;
+      return { success: true };
+    }
+
+    // Default GitHub handler
     const socialUser = {
       id: 'usr_' + Date.now(),
-      name: isGoogle ? 'Rezwan Ahmed' : 'Developer User',
-      email: isGoogle ? 'rezwanahmed@gmail.com' : 'dev@github.com',
-      image: isGoogle
-        ? 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80'
-        : 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&w=150&q=80'
+      name: 'Developer User',
+      email: 'dev@github.com',
+      image: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&w=150&q=80'
     };
 
     setUser(socialUser);
