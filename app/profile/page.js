@@ -6,6 +6,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/context/AuthContext';
 import { authClient } from '@/lib/auth-client';
+import { getUserInitials } from '@/lib/bangla';
 import toast from 'react-hot-toast';
 
 export default function ProfilePage() {
@@ -74,15 +75,16 @@ export default function ProfilePage() {
 
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-emerald-50/80 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden bg-slate-100 border-2 border-slate-200 flex-shrink-0">
-              <img
-                src={
-                  user?.image ||
-                  'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80'
-                }
-                alt={user?.name}
-                className="w-full h-full object-cover"
-              />
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden bg-emerald-600 text-white border-2 border-emerald-200 flex-shrink-0 flex items-center justify-center font-bold text-xl sm:text-2xl shadow-xs">
+              {user?.image ? (
+                <img
+                  src={user.image}
+                  alt={user?.name || 'User'}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <span>{getUserInitials(user?.name)}</span>
+              )}
             </div>
             <div>
               <h2 className="text-xl sm:text-2xl font-bold text-slate-900">

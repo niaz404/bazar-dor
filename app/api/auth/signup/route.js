@@ -3,7 +3,7 @@ import clientPromise from '@/lib/mongodb';
 
 export async function POST(request) {
   try {
-    const { name, email, password } = await request.json();
+    const { name, email, password, image } = await request.json();
 
     if (!name || !email || !password) {
       return NextResponse.json(
@@ -21,8 +21,7 @@ export async function POST(request) {
 
     const client = await clientPromise;
     if (!client) {
-      // If MongoDB URI is not set, return success so client fallback handles it
-      return NextResponse.json({ success: true, message: 'Local storage fallback' });
+      return NextResponse.json({ success: true, message: 'Fallback mode' });
     }
 
     const db = client.db('bazar-dor');
@@ -42,7 +41,7 @@ export async function POST(request) {
       name: name.trim(),
       email: cleanEmail,
       password: password,
-      image: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80',
+      image: image ? image.trim() : null,
       createdAt: new Date()
     };
 

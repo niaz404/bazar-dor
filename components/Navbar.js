@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
-import { getBanglaDate } from '@/lib/bangla';
+import { getBanglaDate, getUserInitials } from '@/lib/bangla';
 import { User, LogOut, Edit, Menu, X, ChevronDown } from 'lucide-react';
 import PriceTicker from './PriceTicker';
 
@@ -60,11 +60,11 @@ export default function Navbar({ tickerProducts = [] }) {
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                   className="flex items-center gap-2.5 p-1.5 pr-3 rounded-full border border-emerald-100 bg-emerald-50/50 hover:bg-emerald-100/50 transition-colors cursor-pointer"
                 >
-                  <div className="w-8 h-8 rounded-full overflow-hidden bg-emerald-200 border border-emerald-300 flex items-center justify-center text-emerald-800 font-bold text-sm">
+                  <div className="w-8 h-8 rounded-full overflow-hidden bg-emerald-600 text-white flex items-center justify-center font-bold text-xs">
                     {user?.image ? (
                       <img src={user.image} alt={user.name} className="w-full h-full object-cover" />
                     ) : (
-                      user?.name?.charAt(0) || 'U'
+                      <span>{getUserInitials(user?.name)}</span>
                     )}
                   </div>
                   <span className="text-sm font-semibold text-slate-800">{user?.name}</span>
@@ -196,8 +196,12 @@ export default function Navbar({ tickerProducts = [] }) {
             {isAuthenticated ? (
               <div className="space-y-2">
                 <div className="flex items-center gap-3 p-2 bg-emerald-50 rounded-xl">
-                  <div className="w-9 h-9 rounded-full overflow-hidden bg-emerald-200">
-                    <img src={user?.image} alt={user?.name} className="w-full h-full object-cover" />
+                  <div className="w-9 h-9 rounded-full overflow-hidden bg-emerald-600 text-white flex items-center justify-center font-bold text-xs">
+                    {user?.image ? (
+                      <img src={user.image} alt={user.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <span>{getUserInitials(user?.name)}</span>
+                    )}
                   </div>
                   <div>
                     <p className="text-sm font-bold text-slate-900">{user?.name}</p>

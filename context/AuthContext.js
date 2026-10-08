@@ -25,7 +25,7 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  // সাইন ইন (MongoDB Backend + Local Session)
+  // সাইন ইন
   const signIn = async ({ email, password }) => {
     setIsLoading(true);
     try {
@@ -54,7 +54,7 @@ export function AuthProvider({ children }) {
           id: 'usr_' + Date.now(),
           name: formattedName || 'ব্যবহারকারী',
           email: email.trim(),
-          image: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80',
+          image: null,
           provider: 'email'
         };
       }
@@ -71,8 +71,8 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // সাইন আপ (MongoDB Backend + User Creation)
-  const signUp = async ({ name, email, password }) => {
+  // সাইন আপ (কাস্টম ইমেজ সাপোর্ট সহ)
+  const signUp = async ({ name, email, password, image = null }) => {
     setIsLoading(true);
     try {
       if (!name || !email || !password) {
@@ -86,7 +86,7 @@ export function AuthProvider({ children }) {
       const res = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password })
+        body: JSON.stringify({ name, email, password, image: image || null })
       });
 
       const data = await res.json();
@@ -118,18 +118,23 @@ export function AuthProvider({ children }) {
     return { success: false };
   };
 
-  // ইউজার প্রোফাইল তথ্য আপডেট (MongoDB + State)
-  const updateUser = async ({ name }) => {
+  // ইউজার প্রোফাইল তথ্য আপডেট
+  const updateUser = async ({ name, image }) => {
     if (!user) return { success: false };
 
     try {
       await fetch('/api/auth/update-user', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: user.email, name })
+        body: JSON.stringify({ email: user.email, name, image })
       });
 
-      const updatedUser = { ...user, name: name.trim() };
+      const updatedUser = {
+        ...user,
+        name: name.trim(),
+        image: image !== undefined ? image : user.image
+      };
+
       setUser(updatedUser);
       localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(updatedUser));
 

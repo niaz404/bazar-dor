@@ -51,7 +51,7 @@ export async function GET(request) {
       id: googleUser.id || 'usr_' + Date.now(),
       name: googleUser.name || 'Google User',
       email: googleUser.email,
-      image: googleUser.picture || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80',
+      image: googleUser.picture || null,
       provider: 'google'
     };
 

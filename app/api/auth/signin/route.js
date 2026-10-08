@@ -43,7 +43,7 @@ export async function POST(request) {
         id: user._id.toString(),
         name: user.name,
         email: user.email,
-        image: user.image || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80'
+        image: user.image || null
       }
     });
   } catch (err) {

@@ -67,7 +67,7 @@ export async function GET(request) {
       id: String(githubUser.id) || 'usr_' + Date.now(),
       name: githubUser.name || githubUser.login || 'GitHub User',
       email: userEmail || `${githubUser.login}@github.com`,
-      image: githubUser.avatar_url || 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&w=150&q=80',
+      image: githubUser.avatar_url || null,
       provider: 'github'
     };
 
