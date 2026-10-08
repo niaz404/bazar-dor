@@ -69,5 +69,5 @@ npm run dev
 
 ## 📬 সাবমিশন ও লিংক (Submission)
 
-- **Live Link**: [লাইভ সাইট লিংক এখানে দিন]
+- **Live Link**: https://bazar-dor-by-niaz.vercel.app/
 - **GitHub Repository Link**: https://github.com/niaz404/bazar-dor
