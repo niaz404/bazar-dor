@@ -78,23 +78,15 @@ export function AuthProvider({ children }) {
   };
 
   const signInWithSocial = async (provider, redirectPath = '/') => {
-    if (provider.toLowerCase() === 'google') {
+    const prov = provider.toLowerCase();
+    if (prov === 'google') {
       window.location.href = `/api/auth/google?redirect=${encodeURIComponent(redirectPath)}`;
       return { success: true };
+    } else if (prov === 'github') {
+      window.location.href = `/api/auth/github?redirect=${encodeURIComponent(redirectPath)}`;
+      return { success: true };
     }
-
-    // Default GitHub handler
-    const socialUser = {
-      id: 'usr_' + Date.now(),
-      name: 'Developer User',
-      email: 'dev@github.com',
-      image: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&w=150&q=80'
-    };
-
-    setUser(socialUser);
-    localStorage.setItem('bazardor_user', JSON.stringify(socialUser));
-    toast.success(`${provider} দিয়ে সফলভাবে সাইন ইন হয়েছে!`);
-    return { success: true };
+    return { success: false };
   };
 
   const updateUser = async ({ name }) => {
