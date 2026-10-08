@@ -1,6 +1,26 @@
 # 🛒 বাজার দর (BazarDor)
 
-নিত্যপ্রয়োজনীয় পণ্যের সর্বশেষ ও নির্ভরযোগ্য দৈনিক বাজারদর পর্যবেক্ষণ এবং বাজারভিত্তিক দাম বিশ্লেষণ প্ল্যাটফর্ম।
+<p align="center">
+  <img src="./public/showcase-main.jpg" alt="বাজার দর মেইন থাম্বনেইল" width="100%" style="border-radius: 16px;" />
+</p>
+
+> **নিত্যপ্রয়োজনীয় পণ্যের সর্বশেষ ও নির্ভরযোগ্য দৈনিক বাজারদর পর্যবেক্ষণ এবং বাজারভিত্তিক দাম বিশ্লেষণ প্ল্যাটফর্ম।**
+
+---
+
+## 📸 অ্যাপ শোকেস ও স্ক্রিনশট (App Showcase)
+
+<div align="center">
+
+| ১. প্রধান ড্যাশবোর্ড ও কমোডিটি ট্র্যাকার |
+| :---: |
+| <img src="./public/showcase-main.jpg" alt="Home Overview" width="100%" /> |
+
+| ২. বিস্তারিত পণ্যের দাম ও বাজারভিত্তিক তুলনা টেবিল | ৩. দৈনিক দর বৃদ্ধি-হ্রাস ও বাংলা সর্টিং ইঞ্জিন |
+| :---: | :---: |
+| <img src="./public/showcase-breakdown.jpg" alt="Market Breakdown" width="100%" /> | <img src="./public/showcase-analytics.jpg" alt="Risers & Fallers" width="100%" /> |
+
+</div>
 
 ---
 
