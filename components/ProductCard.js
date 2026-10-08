@@ -12,12 +12,11 @@ export default function ProductCard({ product }) {
   return (
     <Link
       href={`/product/${targetSlug}`}
-      className="group block bg-white rounded-2xl p-4 sm:p-5 border border-slate-100/90 shadow-xs hover:shadow-lg hover:border-emerald-200 transition-all duration-300 transform hover:-translate-y-1"
+      className="group block bg-white rounded-2xl p-4 sm:p-5 border border-slate-100 shadow-xs hover:border-emerald-200 transition-all"
     >
       <div className="flex items-start justify-between gap-3">
-        {/* Left emoji and title */}
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-emerald-50/60 border border-emerald-100 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform flex-shrink-0">
+          <div className="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-2xl flex-shrink-0">
             <span>{product.image || product.categoryIcon || '🛒'}</span>
           </div>
           <div>
@@ -31,7 +30,6 @@ export default function ProductCard({ product }) {
         </div>
       </div>
 
-      {/* Price row */}
       <div className="mt-4 pt-3 border-t border-slate-50 flex items-end justify-between">
         <div>
           <span className="text-[11px] text-slate-400 block font-medium">আজকের দাম</span>
@@ -40,15 +38,14 @@ export default function ProductCard({ product }) {
           </span>
         </div>
 
-        {/* Change badge */}
         <div>
           <span
             className={`inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full border ${
               isUp
-                ? 'bg-emerald-50 text-emerald-700 border-emerald-200/80'
+                ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
                 : isDown
-                ? 'bg-rose-50 text-rose-700 border-rose-200/80'
-                : 'bg-slate-50 text-slate-600 border-slate-200/80'
+                ? 'bg-rose-50 text-rose-700 border-rose-200'
+                : 'bg-slate-50 text-slate-600 border-slate-200'
             }`}
           >
             {formatBanglaPct(product.change?.pct, product.change?.dir)}

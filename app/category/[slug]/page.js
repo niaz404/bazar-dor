@@ -42,7 +42,6 @@ export default function CategoryPage({ params }) {
           setAllProducts(allProdData || []);
         }
       } catch (err) {
-        console.error('Failed to load category', err);
         setIsNotFound(true);
       } finally {
         setIsLoading(false);
@@ -54,7 +53,6 @@ export default function CategoryPage({ params }) {
     }
   }, [slug]);
 
-  // Handle Bengali numeric sorting for Challenge C1
   const sortedProducts = React.useMemo(() => {
     if (!products || products.length === 0) return [];
     const list = [...products];
@@ -83,14 +81,12 @@ export default function CategoryPage({ params }) {
       <Navbar tickerProducts={allProducts} />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-6">
-        {/* Loading State */}
         {isLoading ? (
           <div className="space-y-6">
             <div className="h-28 bg-white rounded-3xl p-6 border border-slate-100 animate-pulse" />
             <ProductGridSkeleton count={6} />
           </div>
         ) : isNotFound || products.length === 0 ? (
-          /* Empty / Invalid Category State */
           <div className="bg-white rounded-3xl p-10 sm:p-16 border border-slate-200 text-center max-w-xl mx-auto my-12 shadow-xs">
             <div className="w-16 h-16 bg-amber-50 text-amber-600 rounded-3xl flex items-center justify-center mx-auto mb-4">
               <AlertCircle className="w-8 h-8" />
@@ -107,9 +103,7 @@ export default function CategoryPage({ params }) {
             </Link>
           </div>
         ) : (
-          /* Normal Category View Matching Screenshot 4 */
           <div className="space-y-6">
-            {/* Top Category Card */}
             <div className="bg-white rounded-3xl p-6 sm:p-8 border border-emerald-50/80 shadow-sm">
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center text-3xl flex-shrink-0">
@@ -126,7 +120,6 @@ export default function CategoryPage({ params }) {
               </div>
             </div>
 
-            {/* Subheader: Item count and Sort control */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-1">
               <p className="text-xs sm:text-sm font-semibold text-slate-600">
                 মোট {toBanglaNumber(sortedProducts.length)}টি পণ্য দেখানো হচ্ছে
@@ -137,7 +130,6 @@ export default function CategoryPage({ params }) {
               </div>
             </div>
 
-            {/* Products Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {sortedProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />

@@ -7,7 +7,6 @@ import { formatBanglaPrice, formatBanglaPct, formatBanglaUnit } from '@/lib/bang
 export default function PriceTicker({ products = [] }) {
   if (!products || products.length === 0) return null;
 
-  // Duplicate the array to create a seamless infinite loop
   const tickerItems = [...products, ...products];
 
   return (

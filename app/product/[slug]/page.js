@@ -35,7 +35,7 @@ export default function ProductDetailsPage({ params }) {
         setProduct(prod);
         setAllProducts(allProds || []);
       } catch (err) {
-        console.error('Failed to load product', err);
+        //
       } finally {
         setIsLoading(false);
       }
@@ -46,7 +46,6 @@ export default function ProductDetailsPage({ params }) {
     }
   }, [slug]);
 
-  // Protected route toast check
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
       toast.error('পণ্যের বিস্তারিত বাজারদর দেখতে অনুগ্রহ করে সাইন ইন করুন', {
@@ -76,7 +75,6 @@ export default function ProductDetailsPage({ params }) {
     );
   }
 
-  // If user is not authenticated -> show protected screen
   if (!isAuthenticated) {
     return (
       <div className="flex flex-col min-h-screen bg-[#f4f8f5]">
@@ -135,7 +133,6 @@ export default function ProductDetailsPage({ params }) {
 
   const markets = product.markets || [];
 
-  // Find lowest and highest market
   let minMarket = null;
   let maxMarket = null;
 
@@ -151,7 +148,6 @@ export default function ProductDetailsPage({ params }) {
   const isUp = product.change?.dir === 'up' || (product.change?.pct > 0);
   const isDown = product.change?.dir === 'down' || (product.change?.pct < 0);
 
-  // Price difference vs yesterday
   const priceDiff = (product.today || 0) - (product.yesterday || product.today || 0);
 
   return (
@@ -159,7 +155,6 @@ export default function ProductDetailsPage({ params }) {
       <Navbar tickerProducts={allProducts} />
 
       <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
-        {/* Breadcrumb matching Screenshot 5 */}
         <nav className="text-xs sm:text-sm text-slate-500 font-medium flex items-center gap-2">
           <Link href="/" className="hover:text-emerald-700 transition-colors">
             হোম
@@ -179,9 +174,7 @@ export default function ProductDetailsPage({ params }) {
           <span className="text-slate-800 font-semibold">{product.nameBn}</span>
         </nav>
 
-        {/* Top Product Header Card matching Screenshot 5 */}
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-emerald-50/80 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          {/* Left info */}
           <div className="flex items-start gap-4 sm:gap-5">
             <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-slate-100 border border-slate-200/60 flex items-center justify-center text-3xl sm:text-4xl flex-shrink-0">
               <span>{product.image || product.categoryIcon || '🍚'}</span>
@@ -209,7 +202,6 @@ export default function ProductDetailsPage({ params }) {
             </div>
           </div>
 
-          {/* Right Large Price Box matching Screenshot 5 */}
           <div className="w-full md:w-auto bg-[#f8faf9] border border-slate-200/80 rounded-2xl p-4 sm:p-5 text-center min-w-[170px]">
             <span className="text-xs font-semibold text-slate-500 block">আজকের দাম</span>
             <span className="text-3xl sm:text-4xl font-black text-slate-900 block my-1">
@@ -234,14 +226,12 @@ export default function ProductDetailsPage({ params }) {
           </div>
         </div>
 
-        {/* Section 2: দামের সারসংক্ষেপ matching Screenshot 5 */}
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-emerald-50/80 shadow-sm space-y-4">
           <h2 className="text-lg font-bold text-slate-900">
             দামের সারসংক্ষেপ
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {/* Minimum */}
             <div className="bg-[#fbfdfc] rounded-2xl p-5 border border-slate-200/80">
               <span className="text-xs font-semibold text-slate-500 block">সর্বনিম্ন দাম</span>
               <div className="text-2xl font-black text-emerald-600 my-1">
@@ -252,7 +242,6 @@ export default function ProductDetailsPage({ params }) {
               </span>
             </div>
 
-            {/* Maximum */}
             <div className="bg-[#fbfdfc] rounded-2xl p-5 border border-slate-200/80">
               <span className="text-xs font-semibold text-slate-500 block">সর্বোচ্চ দাম</span>
               <div className="text-2xl font-black text-rose-600 my-1">
@@ -263,7 +252,6 @@ export default function ProductDetailsPage({ params }) {
               </span>
             </div>
 
-            {/* Average */}
             <div className="bg-[#fbfdfc] rounded-2xl p-5 border border-slate-200/80">
               <span className="text-xs font-semibold text-slate-500 block">গড় দাম</span>
               <div className="text-2xl font-black text-emerald-800 my-1">
@@ -276,7 +264,6 @@ export default function ProductDetailsPage({ params }) {
           </div>
         </div>
 
-        {/* Section 3: বাজারভিত্তিক আজকের দাম Table matching Screenshot 5 */}
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-emerald-50/80 shadow-sm space-y-4">
           <h2 className="text-lg font-bold text-slate-900">
             বাজারভিত্তিক আজকের দাম

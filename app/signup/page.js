@@ -60,7 +60,6 @@ export default function SignUpPage() {
       <Navbar />
 
       <main className="flex-1 max-w-lg w-full mx-auto px-4 py-12 sm:py-16 flex flex-col items-center justify-center">
-        {/* Page Titles */}
         <div className="text-center mb-8">
           <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
             অ্যাকাউন্ট তৈরি করুন
@@ -70,16 +69,13 @@ export default function SignUpPage() {
           </p>
         </div>
 
-        {/* Card */}
         <div className="bg-white w-full rounded-3xl p-6 sm:p-10 border border-emerald-50/80 shadow-sm">
-          {/* Error Banner */}
           {errorMessage && (
             <div className="mb-6 p-3.5 bg-rose-50 border border-rose-200 text-rose-700 text-xs sm:text-sm rounded-xl font-medium">
               {errorMessage}
             </div>
           )}
 
-          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-semibold text-slate-800 mb-1.5">
@@ -147,7 +143,6 @@ export default function SignUpPage() {
             </div>
           </form>
 
-          {/* Divider */}
           <div className="relative my-6 text-center">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-slate-200" />
@@ -157,7 +152,6 @@ export default function SignUpPage() {
             </span>
           </div>
 
-          {/* Social Logins */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <button
               type="button"
@@ -199,7 +193,6 @@ export default function SignUpPage() {
             </button>
           </div>
 
-          {/* Login switch */}
           <div className="mt-6 pt-4 text-center text-xs text-slate-600 font-medium">
             অ্যাকাউন্ট আছে?{' '}
             <Link
@@ -211,7 +204,6 @@ export default function SignUpPage() {
           </div>
         </div>
 
-        {/* Back to Home CTA */}
         <div className="mt-6 text-center">
           <Link
             href="/"

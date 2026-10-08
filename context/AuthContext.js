@@ -9,7 +9,6 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // পেজ লোড হলে localStorage থেকে ইউজার ডাটা নেওয়া
   useEffect(() => {
     try {
       const saved = localStorage.getItem('bazardor_user');
@@ -17,13 +16,12 @@ export function AuthProvider({ children }) {
         setUser(JSON.parse(saved));
       }
     } catch (e) {
-      console.log('User session load error', e);
+      //
     } finally {
       setIsLoading(false);
     }
   }, []);
 
-  // ইউজার সাইন ইন
   const signIn = async ({ email, password }) => {
     setIsLoading(true);
     try {
@@ -53,7 +51,6 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // ইউজার সাইন আপ
   const signUp = async ({ name, email, password }) => {
     setIsLoading(true);
     try {
@@ -80,7 +77,6 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // সোশ্যাল লগইন (গুগল / গিটহাব)
   const signInWithSocial = async (provider) => {
     const isGoogle = provider === 'Google';
     const socialUser = {
@@ -98,7 +94,6 @@ export function AuthProvider({ children }) {
     return { success: true };
   };
 
-  // ইউজার তথ্য আপডেট করা (Challenge C3)
   const updateUser = async ({ name }) => {
     if (!user) return { success: false };
 
@@ -109,7 +104,6 @@ export function AuthProvider({ children }) {
     return { success: true };
   };
 
-  // সাইন আউট
   const signOut = () => {
     setUser(null);
     localStorage.removeItem('bazardor_user');

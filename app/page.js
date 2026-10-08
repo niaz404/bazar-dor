@@ -5,33 +5,28 @@ import HeroBanner from '@/components/HeroBanner';
 import ProductCard from '@/components/ProductCard';
 import { getProducts } from '@/lib/api';
 import { toBanglaNumber } from '@/lib/bangla';
-import { TrendingUp, TrendingDown, ShoppingBag, Sparkles } from 'lucide-react';
+import { TrendingUp, TrendingDown, ShoppingBag } from 'lucide-react';
 
 export default async function HomePage() {
   const allProducts = await getProducts();
 
-  // Filter Risers (আজ দাম বেড়েছে)
   const risers = allProducts
     .filter((p) => p.change?.dir === 'up' || (p.change?.pct > 0))
     .sort((a, b) => (b.change?.pct || 0) - (a.change?.pct || 0))
     .slice(0, 6);
 
-  // Filter Fallers (আজ দাম কমেছে)
   const fallers = allProducts
     .filter((p) => p.change?.dir === 'down' || (p.change?.pct < 0))
     .sort((a, b) => Math.abs(b.change?.pct || 0) - Math.abs(a.change?.pct || 0))
     .slice(0, 6);
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Navigation bar with live price marquee ticker */}
+    <div className="flex flex-col min-h-screen bg-[#f4f8f5]">
       <Navbar tickerProducts={allProducts} />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
-        {/* 1. Hero / Banner */}
         <HeroBanner />
 
-        {/* 2. Section A — আজ দাম বেড়েছে ▲ */}
         {risers.length > 0 && (
           <section className="mb-12">
             <div className="flex items-center justify-between mb-6">
@@ -58,7 +53,6 @@ export default async function HomePage() {
           </section>
         )}
 
-        {/* 3. Section B — আজ দাম কমেছে ▼ */}
         {fallers.length > 0 && (
           <section className="mb-12">
             <div className="flex items-center justify-between mb-6">
@@ -85,7 +79,6 @@ export default async function HomePage() {
           </section>
         )}
 
-        {/* 4. Section C — সব পণ্য (Target of CTA smooth scroll) */}
         <section id="সব-পণ্য" className="scroll-mt-36">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6 pb-4 border-b border-slate-200">
             <div className="flex items-center gap-2.5">
@@ -97,7 +90,7 @@ export default async function HomePage() {
                   সব পণ্য
                 </h2>
                 <p className="text-xs sm:text-sm text-slate-500 font-medium">
-                  মোট {toBanglaNumber(allProducts.length)}টি পণ্যের সর্বশেষ বাজার দর তালিকাভুক্ত
+                  মোট {toBanglaNumber(allProducts.length)}টি পণ্য দেখানো হচ্ছে
                 </p>
               </div>
             </div>
@@ -111,7 +104,6 @@ export default async function HomePage() {
         </section>
       </main>
 
-      {/* Footer */}
       <Footer />
     </div>
   );

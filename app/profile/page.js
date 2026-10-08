@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -64,7 +63,6 @@ export default function ProfilePage() {
       <Navbar />
 
       <main className="flex-1 max-w-3xl w-full mx-auto px-4 sm:px-6 py-10 sm:py-14 space-y-6">
-        {/* Page Title */}
         <div className="mb-2">
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
             আমার প্রোফাইল
@@ -74,7 +72,6 @@ export default function ProfilePage() {
           </p>
         </div>
 
-        {/* 1. Top Profile Summary Card */}
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-emerald-50/80 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden bg-slate-100 border-2 border-slate-200 flex-shrink-0">
@@ -106,7 +103,6 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* 2. Bottom Information Update Card */}
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-emerald-50/80 shadow-sm space-y-6">
           <h3 className="text-lg font-bold text-slate-900 border-b border-slate-100 pb-3">
             তথ্য
