@@ -1,77 +1,202 @@
-# 📋 B14-A7-Bazar Dor (বাজার দর) — রিকোয়ারমেন্টস চেকলিস্ট
+# 💪 B14-A7-Bazar Dor
 
 ---
 
-## 🐣 ১. বেসিক রিকোয়ারমেন্টস (Basic Requirements)
+## 📅 Deadline For 60 marks: 10 October | ⏱️11:59PM
+## 📅 Deadline For 50 marks: 11 October | ⏱️11:59PM
+## 📅 Deadline for 30 marks: Any time after 11 October 2026
 
-- [x] **সব স্ক্রিন সাইজে রেসপনসিভ (Mobile, Tablet, Desktop)**: গ্রিড, ফ্লেক্স লেআউট ও মোবাইল ড্রয়ার নেভিগেশন সহ সম্পূর্ণ রেসপনসিভ ডিজাইন।
-- [x] **কমপক্ষে ৮টি গিট কমিট (Git Commits)**: অর্থপূর্ণ মেসেজ সহ মোট ১১টি কমিট সম্পন্ন।
-- [x] **ত্রুটিহীন বিল্ড ও রানটাইম (Error-Free App)**: কোনো প্রকার বিল্ড বা রানটাইম এরর নেই (`npm run build` পাস)।
-- [x] **সুন্দর README.md ফাইল**: প্রজেক্ট পরিচিতি, টেকনোলজি, ৫টি মূল ফিচার এবং লোকাল সেটআপ বিবরণ সংবলিত `README.md` তৈরি।
+---
+# API's
+
+## BASE_URL_1: https://api.api-store.workers.dev/api/bazardor
+## BASE_URL_2: https://api.abcz.workers.dev/api/bazardor (alternative)
+
+Endpoints:  
+**All Products:**
+```
+/products
+```
+
+**Filter:**
+```
+/products?category=chal
+```    
+**Single Product:**
+```
+/products/1
+```
+
+**Categories:**
+```
+/categories
+```    
+
+**Single Category:**
+```
+/categories/chal
+```
 
 ---
 
-## 🔧 ২. মূল রিকোয়ারমেন্টস (Main Requirements — 50 Marks)
-
-### 🔝 নেভবার ও মারকুই ব্যানার (Navbar & Price Ticker)
-- [x] **লোগো ও বাংলা তারিখ**: বামপাশে `🛒 বাজার দর` এবং নিচে ডাইনামিক আজকের বাংলা তারিখ (`শুক্রবার, ৯ অক্টোবর, ২০২৬`)।
-- [x] **ক্যাটাগরি নেভিগেশন বার**: চাল, ডাল, তেল, সবজি, মাছ, মাংস, ডিম-দুধ ও মসলা ক্যাটাগরির লিংক।
-- [x] **অ্যাক্টিভ ক্যাটাগরি হাইলাইট**: নির্বাচিত ক্যাটাগরি লিংক সবুজ ব্যাকগ্রাউন্ডে চিহ্নিত।
-- [x] **অথেনটিকেশন বাটন**: লগইন না থাকলে `সাইন ইন` + `সাইন আপ` বাটন এবং লগইন থাকলে ব্যবহারকারীর প্রোফাইল ও সাইন আউট ড্রপডাউন।
-- [x] **প্রাইস ট্র্যাকার (মারকুই ব্যানার)**: নেভবারের নিচে ইনফিনিট স্ক্রলিং লাইভ রেট স্ট্রিপ (`emoji + name + দাম/একক + ▲/▼ %`)।
-
-### 🅱️ হিরো ব্যানার (Hero / Banner)
-- [x] **আইব্রো ব্যাজ**: তারিখ সহ ছোট আইব্রো টেক্সট ব্যাজ।
-- [x] **প্রধান শিরোনাম**: `আজকের বাজারের দাম এক নজরে`।
-- [x] **সাবটাইটেল**: পণ্যের বিভাগ ও বাজারভিত্তিক সারাংশ টেক্সট।
-- [x] **প্রাইমারি CTA বাটন**: বাটনে ক্লিক করলে একই পেজের `#সব-পণ্য` সেকশনে স্মুথ স্ক্রল হয়।
-- [x] **ডানপাশের হিরো ইমেজ**: ঝুড়ি ভর্তি পণ্যের অলংকরণ ছবি (`/bazar-hero.png`)।
-
-### ⚖️ হোম পেজের প্রোডাক্ট সেকশন (Product Sections)
-- [x] **সেকশন A — “আজ দাম বেড়েছে ▲”**: দাম বৃদ্ধির শীর্ষ ৬টি পণ্যের ফিল্টার করা তালিকা।
-- [x] **সেকশন B — “আজ দাম কমেছে ▼”**: দাম হ্রাসের শীর্ষ ৬টি পণ্যের ফিল্টার করা তালিকা।
-- [x] **সেকশন C — “সব পণ্য”**: মোট ৩৩টি পণ্যের রেসপনসিভ গ্রিড ও সাবটাইটেল।
-- [x] **কার্ড এলিমেন্টসমূহ**: ইমোজি, পণ্যের নাম, একক (`প্রতি কেজি/লিটার`), আজকের দাম (`১৪৮ টাকা`) এবং পরিবর্তনের ব্যাজ (`▲ ২.১% / ▼ ২.৯% / — ০.০%`)।
-- [x] **কার্ড নেভিগেশন**: কার্ডে ক্লিক করলে পণ্যের ডিটেইলস পেজে নিয়ে যায়।
-
-### 🔒 প্রোডাক্ট ডিটেইলস পেজ (`/product/[slug]`)
-- [x] **সুরক্ষিত রুট (Protected Route)**: লগইন ছাড়া প্রবেশ করলে সুরক্ষিত পেজের লক মেসেজ এবং সাইন ইন পেজে রিডাইরেক্ট করে টোস্ট অ্যালার্ট।
-- [x] **টপ সামারি কার্ড**: বড় ইমোজি, নাম, সাবটাইটেল, ক্যাটাগরি ট্যাগ, একক ও পূর্ববর্তী দিনের তুলনায় দামের পরিবর্তন।
-- [x] **দামের সারসংক্ষেপ**: সর্বনিম্ন দাম (সবচেয়ে কম বাজার সহ), সর্বোচ্চ দাম (সবচেয়ে বেশি বাজার সহ) ও গড় দামের কার্ড।
-- [x] **বাজারভিত্তিক আজকের দাম টেবিল**: বাজার, বিভাগ, সর্বনিম্ন, সর্বোচ্চ ও গড় কলাম সহ বিস্তারিত টেবিল।
-
-### 🏷️ ক্যাটাগরি পেজ (`/category/[slug]`)
-- [x] **ক্যাটাগরি হেডার**: আইকন, নাম ও মোট পণ্যের সংখ্যার ব্যাজ।
-- [x] **সাজান (Sort Control)**: ড্রপডাউন (`ডিফল্ট`, `দাম: কম থেকে বেশি`, `দাম: বেশি থেকে কম`)।
-- [x] **লোড হওয়ার অ্যানিমেশন (Skeleton Loader)**: ডাটা ফেচ করার সময় অ্যানিমেটেড কঙ্কাল লোডার।
-- [x] **পণ্য তালিকা গ্রিড**: হোম পেজের মতো সুন্দর কার্ড গ্রিড।
-- [x] **খালি বা ভুল স্লাগ পেজ (Empty State)**: ফ্রেন্ডলি এরর মেসেজ ও "হোম পেজে ফিরে যান" বাটন।
-
-### 🔐 অথেনটিকেশন (`/signin`, `/signup`, `/profile`)
-- [x] **সাইন ইন পেজ (`/signin`)**: ইমেইল, পাসওয়ার্ড ইনপুট, এরর মেসেজ ও সাইন ইন বাটন।
-- [x] **সাইন আপ পেজ (`/signup`)**: নাম, ইমেইল, পাসওয়ার্ড, নিশ্চিত পাসওয়ার্ড ইনপুট ও রেজিস্ট্রেশন সম্পন্ন বাটন।
-- [x] **সোশ্যাল লগইন**: গুগল (`Google দিয়ে চালিয়ে যান`) ও গিটহাব (`GitHub দিয়ে চালিয়ে যান`) বাটন।
-- [x] **টোস্ট নোটিফিকেশন (`react-hot-toast`)**: লগইন, সাইন আপ, প্রোফাইল আপডেট ও লগআউটে ফিডব্যাক।
-
-### 🦶 ফুটার ও ৪০৪ পেজ
-- [x] **ফুটার টেক্সট**: বামে `বাজার দর — প্রয়োজনীয় পণ্যের দাম এক নজরে।` এবং ডানে `সকল দাম সম্ভাব্য...`।
-- [x] **৪০৪ এরর পেজ (`app/not-found.jsx`)**: কাস্টম ডিজাইন সহ "হোম পেজে ফিরে যান" বাটন।
+## 🐣 Basic Requirements (Must Do for Everyone)
+- [x] Your app must work on all screen sizes — mobile, tablet, and desktop
+- [x] Make at least 8 Git commits with clear, meaningful messages
+- [x] Your app must run without any errors after deployment
+- [x] Add a nice README.md file with your project name, description, technologies used, and features(minimum 5)
 
 ---
 
-## 🏆 ৩. চ্যালেঞ্জ রিকোয়ারমেন্টস (Challenge Requirements — 10 Marks)
+# 🔧 Main Requirements — 50 Marks
 
-- [x] **C1. বাংলা সংখ্যাভিত্তিক সর্টিং**: বাংলা সংখ্যা ডিজিট রূপান্তর করে কম থেকে বেশি ও বেশি থেকে কম সঠিক নিউমেরিক্যাল সর্টিং।
-- [x] **C2. সুন্দর GitHub README**: ৫টি মূল ফিচার, টেক স্ট্যাক এবং প্রজেক্ট রান করার নিয়মাবলী সহ গোছানো ডকুমেন্টেশন।
-- [x] **C3. প্রোফাইল তথ্য আপডেট ফিচার**: `/profile` রুটে ব্যবহারকারীর নাম পরিবর্তন ও তাৎক্ষণিক সেশন আপডেট।
+
+### 1. 🔝 Navbar
+
+- [x] Design the Navbar exactly like the Figma.
+- [x] Put your logo on the left side: `🛒 বাজার দর` + Bangla date underneath.
+- [x] Put your navigation links in a second row / middle — category links.
+- [x] The active category link should look different (highlighted).
+- [x] **Right-side auth buttons**: `সাইন ইন` + `সাইন আপ`. When logged in, show profile / sign-out instead.
+- [x] **Price ticker (marquee) below navbar**: infinite scrolling strip showing `emoji + name + দাম টাকা/একক + ▲/▼ %` 
 
 ---
 
-## 📊 মূল্যায়ন সারাংশ (Final Score)
+### 2. 🅱️ Hero / Banner
 
-| বিষয় | পূর্ণমান | অর্জিত অবস্থা |
-|---|:---:|:---:|
-| বেসিক রিকোয়ারমেন্টস | আবশ্যক | ✅ সম্পন্ন (১০০%) |
-| মেইন রিকোয়ারমেন্টস (১ - ৭) | ৫০ | ✅ ৫০ / ৫০ |
-| চ্যালেঞ্জ রিকোয়ারমেন্টস (C1, C2, C3) | ১০ | ✅ ১০ / ১০ |
-| **সর্বমোট** | **৬০** | **✅ ৬০ / ৬০ (পূর্ণাঙ্গ সম্পন্ন)** |
+- [x] Eyebrow / small text
+- [x] Main heading
+- [x] Subtitle
+- [x] A primary **CTA button**
+  - [x] It scrolls the user down to the `#সব-পণ্য` section on the same page (an anchor link, not a route change).
+- [x] A **banner/hero image** on the right side..
+
+
+---
+
+### 3. ⚖️ The Product Sections (Home Page)
+
+- [x] **Section A — “আজ দাম বেড়েছে ▲”**: Top 6 risers. 
+- [x] **Section B — “আজ দাম কমেছে ▼”**: Top 6 fallers. 
+- [x] **Section C — “সব পণ্য” with subtitle** .
+- [x] Display all products from JSON data as cards in a **responsive grid** (3-4 cols on large screens, collapses on mobile). Must be responsive.
+- [x] Each card must show:
+  - [x] 📷 Emoji / illustration (e.g. `🍚 🫘 🫙 🥔 🧅 🌶️ 🐟 🍗 🥚 🫚 🧄`)
+  - [x] 📛 Product name (e.g. “স্বর্ণমাছি চাল”, “মিনিকেট চাল”, “ইলিশ মাছ”, “পেঁয়াজ”)
+  - [x] 🖇️ Unit line (e.g. `প্রতি কেজি`, `প্রতি লিটার`, `প্রতি ডজন`, `প্রতি পিস`)
+  - [x] 🔴 Price row: label `আজকের দাম` + value (e.g. `১৪৮ টাকা`, `১,৮৫০ টাকা` — Bengali digits) + change badge `▲ ২.১% / ▼ ২.৯% / —০.০%` (green up, red down, gray flat)
+- [x] 🧭 Clicking a card navigates the user to that product’s **Detail Page**.
+
+---
+
+### 4. Product Details Page — Layout (`/product/[slug]`)
+
+**Protected route — requires login.**
+
+**Top — Summary:**
+- [x] Emoji + Title
+- [x] Subtitle/description (market summary line)
+- [x] Category tags (e.g. `সবজি`, `চাল`)
+- [x] Unit (`প্রতি কেজি / লিটার / ডজন / পিস`)
+
+
+**Price - Summary** 
+- [x] Minimum Price
+- [x] Maximum Price 
+- [x] Average Price 
+
+
+**বাজারভিত্তিক আজকের দাম** 
+- [x] Show all the data like figma based on different Bazar. You can do this section Design like figma or as you want. 
+
+
+### 5. Category Page
+- [x] Title + icon 
+- [x] **Sort control**: `সাজান: ডিফল্ট | দাম: কম থেকে বেশি | দাম: বেশি থেকে কম` (see C1).
+- [x] **Loading state**: show skeleton / “Loading…” while fetching before the list renders.
+- [x] **Product cards list**: same card design as Home (thumbnail emoji, title e.g. “আলু”, “পেঁয়াজ”, “ঢেঁড়স”, unit e.g. “প্রতি কেজি”, price + change badge).
+- [x] **Empty state** (when category has no items / invalid slug): 404-style message + CTA button **“হোম পেজে ফিরে যান”** (links back to `/`).
+
+
+### 6. Authentication (`/signin`, `/signup`)
+
+- [x] **Sign In**: User Login: The user will  show  a Login page with a form , so that the user can Log in this application. 
+    - [x] Show a Title for Login.  & Form with following fields ( Email , Password , Login button ) 
+    - [x] If the user Login successfully then navigate him to his Home page. If not, show him an error with toast / error message anywhere in the form.
+
+    - [x] There will be some other options like:
+        - [x] Show the user a Link for Register  so that he can go to the register page. 
+        - [x] Show users a Social Login Button ( Google/GitHub/any other social login ) . on Clicking it user authenticate with Google Navigate him to  his Home page.
+- [x] **Sign Up**: User Registration: Create a register page with a form , so that the user can register himself in this application. 
+    - [x] Show a Title for registration and a Form with following fields( Name , Email, Password & Register Button ) 
+    - [x] If the user Register successfully then navigate him to his login page.
+    - [x] If not, show him an error with toast / error message anywhere in the form.
+
+
+    - [x] There will be some other options like 
+        - [x] Show the user a Link for Login so that he can go to the Login page. 
+        - [x] Show users a Social Login Button ( Google/GitHub/any other social login ) . on Clicking it user authenticate with Google Navigate the user to the Home page.
+
+- [x] Use **BetterAuth** (email/password + Google + GitHub), toast on success/error, skeleton loaders.
+- [x] Show relevant **toast notification** on login / signup / logout / validation error.
+- [x] 💡Don’t implement email verification or forget password method as it will inconvenience the examiner. If you want, you can add these after receiving the assignment result.
+
+--- 
+
+### 7. Footer
+- [x] Match the Figma.
+- [x] **Left**: `বাজার দর — প্রয়োজনীয় পণ্যের দাম এক নজরে।`
+- [x] **Right**: *“সকল দাম সম্ভাব্য; বাজার অবস্থার ওপর নির্ভর করে পরিবর্তিত হয়।”*
+
+### 8. Responsive Design
+- [x] The entire website must work correctly on mobile, tablet, and desktop screen sizes (grid collapses correctly, navbar + ticker stays usable, hero stacks, `btn-sm sm:btn-md`, `max-w-6xl` container, etc.).
+
+---
+
+#	Requirement
+- [x] Add a 404 Page for any unknown/invalid route (e.g. `/category/invalid`, `/product/unknown` → friendly  404 + “হোম পেজে ফিরে যান”)
+- [x] Show a loading animation ( `skeleton`) while the product data is being fetched on the Home / Category page
+- [x] Show a relevant toast notification for auth + protected-route redirects (use `react-hot-toast` / `data-rht-toaster`).
+- [x] Make sure reloading any page after deployment does not cause an error (dynamic `[slug]` routes must work on Vercel — no hard 404 on refresh)
+
+---
+
+# Challenge Requirements — 10 Marks
+
+### C1. - **Sort dropdown**:
+- [x] “সাজান” → options `ডিফল্ট`, `দাম: কম থেকে বেশি`, `দাম: বেশি থেকে কম` (default `ডিফল্ট`, with chevron icon). Must handle Bengali numerals correctly (sort by numeric value, not string).
+
+### C2. GitHub README
+- [x] Add a well-designed `README.md` that includes:
+  - [x] Project name (বাজার দর / BazarDor)
+  - [x] Short description
+  - [x] Technologies used
+  - [x] 5 key features of the project
+
+### C3. - Update Information Feature
+- [x] In My Profile route there will be an update button. On clicking it,  Take user to another route 
+- [x] Show user a form with an input field (  Name ), An Update Information button.
+
+Follow this documentation: https://better-auth.com/docs/concepts/users-accounts#update-user 
+
+
+---
+
+### 🛠️ Technologies to Use
+Technology	Purpose
+- Next.js ->	Build the UI
+- App router(Next.js) +	Handle page navigation
+- Tailwind CSS + Any component library	Styling and responsiveness(DaisyUI, Hero UI)
+- TypeScript / JavaScript
+- BetterAuth
+
+### 🚀 Deployment
+Deploy your project on Vercel, Netlify, Cloudflare Pages, or anywhere else before submitting.
+
+## 📬 Submission
+Fill in both links before submitting:
+
+- Live Link:
+- GitHub Repository Link:
+
+
+### Notes : You can use Bengali or English language for core website information or any kind of text.
