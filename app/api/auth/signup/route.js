@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import clientPromise from '@/lib/mongodb';
+import { getMongoClient } from '@/lib/mongodb';
 
 export async function POST(request) {
   try {
@@ -14,14 +14,39 @@ export async function POST(request) {
 
     if (password.length < 6) {
       return NextResponse.json(
-        { error: 'পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে' },
+        { error: 'পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে باشد' },
         { status: 400 }
       );
     }
 
-    const client = await clientPromise;
+    let client = null;
+    try {
+      client = await getMongoClient();
+    } catch (dbConnectErr) {
+      console.error('MongoDB Connect Error in SignUp:', dbConnectErr.message);
+      if (dbConnectErr.message?.includes('Authentication failed') || dbConnectErr.code === 8000) {
+        return NextResponse.json(
+          { error: 'MongoDB Atlas Authentication failed! অনুগ্রহ করে .env ফাইলে সঠিক ডাটাবেজ ইউজারনেম ও পাসওয়ার্ড চেক করুন।' },
+          { status: 401 }
+        );
+      }
+      return NextResponse.json(
+        { error: `ডাটাবেজ কানেকশন ত্রুটি: ${dbConnectErr.message}` },
+        { status: 500 }
+      );
+    }
+
     if (!client) {
-      return NextResponse.json({ success: true, message: 'Fallback mode' });
+      return NextResponse.json({
+        success: true,
+        message: 'Client fallback mode',
+        user: {
+          id: 'usr_' + Date.now(),
+          name: name.trim(),
+          email: email.toLowerCase().trim(),
+          image: image ? image.trim() : null
+        }
+      });
     }
 
     const db = client.db('bazar-dor');
@@ -59,8 +84,9 @@ export async function POST(request) {
   } catch (err) {
     console.error('MongoDB Sign Up Error:', err);
     return NextResponse.json(
-      { error: 'রেজিস্ট্রেশন করতে সমস্যা হয়েছে' },
+      { error: err.message || 'রেজিস্ট্রেশন করতে সমস্যা হয়েছে' },
       { status: 500 }
     );
   }
 }
+

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import clientPromise from '@/lib/mongodb';
+import { getMongoClient } from '@/lib/mongodb';
 
 export async function POST(request) {
   try {
@@ -12,7 +12,23 @@ export async function POST(request) {
       );
     }
 
-    const client = await clientPromise;
+    let client = null;
+    try {
+      client = await getMongoClient();
+    } catch (dbConnectErr) {
+      console.error('MongoDB Connect Error in SignIn:', dbConnectErr.message);
+      if (dbConnectErr.message?.includes('Authentication failed') || dbConnectErr.code === 8000) {
+        return NextResponse.json(
+          { error: 'MongoDB Atlas Authentication failed! ডাটাবেজ পাসওয়ার্ড চেক করুন।' },
+          { status: 401 }
+        );
+      }
+      return NextResponse.json(
+        { error: `ডাটাবেজ কানেকশন ত্রুটি: ${dbConnectErr.message}` },
+        { status: 500 }
+      );
+    }
+
     if (!client) {
       return NextResponse.json({ success: true, fallback: true });
     }
@@ -49,8 +65,9 @@ export async function POST(request) {
   } catch (err) {
     console.error('MongoDB Sign In Error:', err);
     return NextResponse.json(
-      { error: 'লগইন করতে সমস্যা হয়েছে' },
+      { error: err.message || 'লগইন করতে সমস্যা হয়েছে' },
       { status: 500 }
     );
   }
 }
+
