@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/context/AuthContext';
-import { User, Mail, Lock, UserPlus, ArrowRight } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function SignUpPage() {
@@ -16,6 +15,7 @@ export default function SignUpPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (e) => {
@@ -31,6 +31,12 @@ export default function SignUpPage() {
     if (password.length < 6) {
       setErrorMessage('পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে');
       toast.error('পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে');
+      return;
+    }
+
+    if (confirmPassword && password !== confirmPassword) {
+      setErrorMessage('পাসওয়ার্ড দুটি মেলেনি');
+      toast.error('পাসওয়ার্ড দুটি মেলেনি');
       return;
     }
 
@@ -50,24 +56,22 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-[#f4f8f5]">
       <Navbar />
 
-      <main className="flex-1 max-w-md w-full mx-auto px-4 py-12 flex items-center justify-center">
-        <div className="bg-white w-full rounded-3xl p-6 sm:p-8 border border-slate-100 shadow-md">
-          {/* Top Logo and Title */}
-          <div className="text-center mb-8">
-            <div className="w-14 h-14 bg-emerald-600 rounded-2xl flex items-center justify-center text-white text-2xl mx-auto mb-3 shadow-md">
-              🛒
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-              নতুন অ্যাকাউন্ট খুলুন
-            </h1>
-            <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
-              বাজার দরে যুক্ত হতে নিচের ফর্মটি পূরণ করুন
-            </p>
-          </div>
+      <main className="flex-1 max-w-lg w-full mx-auto px-4 py-12 sm:py-16 flex flex-col items-center justify-center">
+        {/* Page Titles */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+            অ্যাকাউন্ট তৈরি করুন
+          </h1>
+          <p className="text-sm text-slate-600 font-medium mt-2">
+            বিনা খরচে সাইন আপ করে সব বিস্তারিত দাম দেখুন।
+          </p>
+        </div>
 
+        {/* Card */}
+        <div className="bg-white w-full rounded-3xl p-6 sm:p-10 border border-emerald-50/80 shadow-sm">
           {/* Error Banner */}
           {errorMessage && (
             <div className="mb-6 p-3.5 bg-rose-50 border border-rose-200 text-rose-700 text-xs sm:text-sm rounded-xl font-medium">
@@ -75,73 +79,72 @@ export default function SignUpPage() {
             </div>
           )}
 
-          {/* Sign Up Form */}
+          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                আপনার পুরো নাম
+              <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+                নাম
               </label>
-              <div className="relative">
-                <User className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <input
-                  type="text"
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="যেমন: রেজওয়ান আহমেদ"
-                  className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-emerald-600 focus:bg-white transition-colors"
-                />
-              </div>
+              <input
+                type="text"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full px-4 py-3 bg-[#fbfdfc] border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-emerald-600 focus:bg-white transition-colors"
+              />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                ইমেইল ঠিকানা
+              <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+                ইমেইল
               </label>
-              <div className="relative">
-                <Mail className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@example.com"
-                  className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-emerald-600 focus:bg-white transition-colors"
-                />
-              </div>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-3 bg-[#fbfdfc] border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-emerald-600 focus:bg-white transition-colors"
+              />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+              <label className="block text-sm font-semibold text-slate-800 mb-1.5">
                 পাসওয়ার্ড
               </label>
-              <div className="relative">
-                <Lock className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <input
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড"
-                  className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-emerald-600 focus:bg-white transition-colors"
-                />
-              </div>
+              <input
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 bg-[#fbfdfc] border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-emerald-600 focus:bg-white transition-colors"
+              />
             </div>
 
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full py-3.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
-            >
-              {isLoading ? (
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              ) : (
-                <>
-                  <UserPlus className="w-4 h-4" />
-                  <span>নিবন্ধন সম্পন্ন করুন</span>
-                </>
-              )}
-            </button>
+            <div>
+              <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+                পাসওয়ার্ড নিশ্চিত করুন
+              </label>
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full px-4 py-3 bg-[#fbfdfc] border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-emerald-600 focus:bg-white transition-colors"
+              />
+            </div>
+
+            <div className="pt-2">
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full py-3.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm sm:text-base rounded-xl shadow-xs hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+              >
+                {isLoading ? (
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <span>অ্যাকাউন্ট তৈরি করুন</span>
+                )}
+              </button>
+            </div>
           </form>
 
           {/* Divider */}
@@ -149,18 +152,18 @@ export default function SignUpPage() {
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-slate-200" />
             </div>
-            <span className="relative bg-white px-3 text-xs text-slate-400 font-medium">
-              অথবা সরাসরি সাইন ইন
+            <span className="relative bg-white px-3 text-xs text-slate-400 font-semibold">
+              অথবা
             </span>
           </div>
 
           {/* Social Logins */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <button
               type="button"
               onClick={() => handleSocial('Google')}
               disabled={isLoading}
-              className="flex items-center justify-center gap-2 py-2.5 px-4 border border-slate-200 hover:bg-slate-50 rounded-xl text-xs font-bold text-slate-700 transition-colors"
+              className="flex items-center justify-center gap-2 py-3 px-4 border border-slate-200 hover:bg-slate-50 rounded-xl text-xs font-bold text-slate-700 transition-colors"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24">
                 <path
@@ -180,32 +183,42 @@ export default function SignUpPage() {
                   d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
                 />
               </svg>
-              <span>গুগল</span>
+              <span>Google দিয়ে চালিয়ে যান</span>
             </button>
 
             <button
               type="button"
               onClick={() => handleSocial('GitHub')}
               disabled={isLoading}
-              className="flex items-center justify-center gap-2 py-2.5 px-4 border border-slate-200 hover:bg-slate-50 rounded-xl text-xs font-bold text-slate-700 transition-colors"
+              className="flex items-center justify-center gap-2 py-3 px-4 border border-slate-200 hover:bg-slate-50 rounded-xl text-xs font-bold text-slate-700 transition-colors"
             >
               <svg className="w-4 h-4 fill-current text-slate-900" viewBox="0 0 24 24">
                 <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
               </svg>
-              <span>গিটহাব</span>
+              <span>GitHub দিয়ে চালিয়ে যান</span>
             </button>
           </div>
 
-          {/* Login Link */}
-          <div className="mt-6 pt-5 border-t border-slate-100 text-center text-xs text-slate-500">
-            ইতিমধ্যে অ্যাকাউন্ট আছে?{' '}
+          {/* Login switch */}
+          <div className="mt-6 pt-4 text-center text-xs text-slate-600 font-medium">
+            অ্যাকাউন্ট আছে?{' '}
             <Link
               href="/signin"
-              className="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1"
+              className="font-bold text-emerald-700 hover:underline"
             >
-              সাইন ইন করুন <ArrowRight className="w-3 h-3" />
+              সাইন ইন করুন
             </Link>
           </div>
+        </div>
+
+        {/* Back to Home CTA */}
+        <div className="mt-6 text-center">
+          <Link
+            href="/"
+            className="text-xs sm:text-sm font-semibold text-slate-500 hover:text-emerald-700 transition-colors"
+          >
+            ← হোম পেজে ফিরে যান
+          </Link>
         </div>
       </main>
 

@@ -9,7 +9,7 @@ import ProductGridSkeleton from '@/components/ProductGridSkeleton';
 import SortControl from '@/components/SortControl';
 import { getCategoryBySlug, getProducts } from '@/lib/api';
 import { toBanglaNumber, fromBanglaNumber } from '@/lib/bangla';
-import { Layers, ArrowLeft, AlertCircle } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 
 export default function CategoryPage({ params }) {
   const resolvedParams = use(params);
@@ -79,14 +79,14 @@ export default function CategoryPage({ params }) {
   }, [products, sortOption]);
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-[#f4f8f5]">
       <Navbar tickerProducts={allProducts} />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-6">
         {/* Loading State */}
         {isLoading ? (
           <div className="space-y-6">
-            <div className="h-10 bg-slate-200 rounded-2xl w-1/3 animate-pulse" />
+            <div className="h-28 bg-white rounded-3xl p-6 border border-slate-100 animate-pulse" />
             <ProductGridSkeleton count={6} />
           </div>
         ) : isNotFound || products.length === 0 ? (
@@ -103,35 +103,35 @@ export default function CategoryPage({ params }) {
               href="/"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-sm transition-all"
             >
-              <ArrowLeft className="w-4 h-4" />
-              <span>হোম পেজে ফিরে যান</span>
+              <span>← হোম পেজে ফিরে যান</span>
             </Link>
           </div>
         ) : (
-          /* Normal Category View */
-          <div>
-            {/* Header with Icon, Title, and Sort Control */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-slate-200">
-              <div className="flex items-center gap-3.5">
-                <div className="w-14 h-14 rounded-2xl bg-emerald-100/80 border border-emerald-200/60 flex items-center justify-center text-3xl shadow-xs">
+          /* Normal Category View Matching Screenshot 4 */
+          <div className="space-y-6">
+            {/* Top Category Card */}
+            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-emerald-50/80 shadow-sm">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center text-3xl flex-shrink-0">
                   <span>{category?.icon || '🏷️'}</span>
                 </div>
                 <div>
-                  <div className="flex items-center gap-2">
-                    <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                      {category?.nameBn || category?.name || slug}
-                    </h1>
-                    <span className="text-xs font-bold px-2.5 py-1 bg-emerald-50 text-emerald-800 rounded-full border border-emerald-100">
-                      {toBanglaNumber(products.length)}টি পণ্য
-                    </span>
-                  </div>
-                  <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
-                    ক্যাটাগরি অনুযায়ী আজকের সর্বশেষ বাজারদর তালিকা
+                  <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                    {category?.nameBn || category?.name || slug}
+                  </h1>
+                  <p className="text-sm text-slate-500 font-medium mt-0.5">
+                    {toBanglaNumber(products.length)}টি পণ্যের আজকের দাম ও পরিবর্তন
                   </p>
                 </div>
               </div>
+            </div>
 
-              {/* Challenge C1: Sort dropdown */}
+            {/* Subheader: Item count and Sort control */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-1">
+              <p className="text-xs sm:text-sm font-semibold text-slate-600">
+                মোট {toBanglaNumber(sortedProducts.length)}টি পণ্য দেখানো হচ্ছে
+              </p>
+
               <div className="flex items-center justify-end">
                 <SortControl value={sortOption} onChange={setSortOption} />
               </div>

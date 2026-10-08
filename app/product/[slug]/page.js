@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, use } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/context/AuthContext';
@@ -14,32 +13,17 @@ import {
   toBanglaNumber
 } from '@/lib/bangla';
 import toast from 'react-hot-toast';
-import {
-  ArrowLeft,
-  Lock,
-  TrendingUp,
-  TrendingDown,
-  Building2,
-  Calendar,
-  Layers,
-  MapPin,
-  Scale,
-  Sparkles,
-  Info
-} from 'lucide-react';
+import { Lock, ArrowLeft } from 'lucide-react';
 
 export default function ProductDetailsPage({ params }) {
   const resolvedParams = use(params);
   const slug = resolvedParams.slug;
-  const router = useRouter();
-  const { user, isAuthenticated, isLoading: authLoading } = useAuth();
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
 
   const [product, setProduct] = useState(null);
   const [allProducts, setAllProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedDivision, setSelectedDivision] = useState('all');
 
-  // Load product data
   useEffect(() => {
     async function loadData() {
       setIsLoading(true);
@@ -62,26 +46,27 @@ export default function ProductDetailsPage({ params }) {
     }
   }, [slug]);
 
-  // Protected Route Check
+  // Protected route toast check
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
       toast.error('পণ্যের বিস্তারিত বাজারদর দেখতে অনুগ্রহ করে সাইন ইন করুন', {
-        id: 'auth-required-toast'
+        id: 'auth-toast'
       });
     }
   }, [authLoading, isAuthenticated]);
 
   if (authLoading || isLoading) {
     return (
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen bg-[#f4f8f5]">
         <Navbar tickerProducts={allProducts} />
-        <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-12">
+        <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-12">
           <div className="bg-white rounded-3xl p-8 border border-slate-100 animate-pulse space-y-6">
-            <div className="h-10 bg-slate-200 rounded-xl w-1/3" />
+            <div className="h-6 bg-slate-200 rounded w-1/4" />
+            <div className="h-28 bg-slate-100 rounded-2xl" />
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="h-28 bg-slate-100 rounded-2xl" />
-              <div className="h-28 bg-slate-100 rounded-2xl" />
-              <div className="h-28 bg-slate-100 rounded-2xl" />
+              <div className="h-24 bg-slate-100 rounded-2xl" />
+              <div className="h-24 bg-slate-100 rounded-2xl" />
+              <div className="h-24 bg-slate-100 rounded-2xl" />
             </div>
             <div className="h-64 bg-slate-100 rounded-2xl" />
           </div>
@@ -91,13 +76,13 @@ export default function ProductDetailsPage({ params }) {
     );
   }
 
-  // If user is not authenticated -> show protected screen with Sign In prompt
+  // If user is not authenticated -> show protected screen
   if (!isAuthenticated) {
     return (
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen bg-[#f4f8f5]">
         <Navbar tickerProducts={allProducts} />
-        <main className="flex-1 max-w-xl w-full mx-auto px-4 py-16 flex items-center justify-center">
-          <div className="bg-white rounded-3xl p-8 sm:p-10 border border-emerald-100 shadow-lg text-center w-full">
+        <main className="flex-1 max-w-lg w-full mx-auto px-4 py-16 flex items-center justify-center">
+          <div className="bg-white rounded-3xl p-8 sm:p-10 border border-emerald-50 shadow-md text-center w-full">
             <div className="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto mb-4">
               <Lock className="w-8 h-8" />
             </div>
@@ -108,7 +93,7 @@ export default function ProductDetailsPage({ params }) {
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link
                 href={`/signin?redirect=/product/${slug}`}
-                className="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md transition-all text-center"
+                className="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-sm transition-all text-center"
               >
                 সাইন ইন করুন
               </Link>
@@ -126,13 +111,12 @@ export default function ProductDetailsPage({ params }) {
     );
   }
 
-  // If product not found
   if (!product) {
     return (
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen bg-[#f4f8f5]">
         <Navbar tickerProducts={allProducts} />
         <main className="flex-1 max-w-xl w-full mx-auto px-4 py-16 text-center">
-          <div className="bg-white rounded-3xl p-10 border border-slate-200">
+          <div className="bg-white rounded-3xl p-10 border border-slate-200 shadow-sm">
             <h2 className="text-2xl font-black text-slate-900 mb-2">পণ্যটি খুঁজে পাওয়া যায়নি</h2>
             <p className="text-sm text-slate-600 mb-6">অনুসন্ধানকৃত পণ্যটির কোনো তথ্য সংরক্ষিত নেই।</p>
             <Link
@@ -149,271 +133,198 @@ export default function ProductDetailsPage({ params }) {
     );
   }
 
-  // Calculate market prices summary
   const markets = product.markets || [];
-  const minPrices = markets.map((m) => m.min).filter(Boolean);
-  const maxPrices = markets.map((m) => m.max).filter(Boolean);
 
-  const calculatedMin = minPrices.length > 0 ? Math.min(...minPrices) : product.today;
-  const calculatedMax = maxPrices.length > 0 ? Math.max(...maxPrices) : product.today;
-  const calculatedAvg =
-    minPrices.length > 0
-      ? Math.round((minPrices.reduce((a, b) => a + b, 0) + maxPrices.reduce((a, b) => a + b, 0)) / (minPrices.length + maxPrices.length))
-      : product.today;
+  // Find lowest and highest market
+  let minMarket = null;
+  let maxMarket = null;
 
-  // Divisions list
-  const divisions = ['all', ...Array.from(new Set(markets.map((m) => m.division).filter(Boolean)))];
+  if (markets.length > 0) {
+    minMarket = [...markets].sort((a, b) => a.min - b.min)[0];
+    maxMarket = [...markets].sort((a, b) => b.max - a.max)[0];
+  }
 
-  const filteredMarkets =
-    selectedDivision === 'all'
-      ? markets
-      : markets.filter((m) => m.division === selectedDivision);
+  const calculatedMin = minMarket ? minMarket.min : product.today;
+  const calculatedMax = maxMarket ? maxMarket.max : product.today;
+  const calculatedAvg = product.today;
 
   const isUp = product.change?.dir === 'up' || (product.change?.pct > 0);
   const isDown = product.change?.dir === 'down' || (product.change?.pct < 0);
 
+  // Price difference vs yesterday
+  const priceDiff = (product.today || 0) - (product.yesterday || product.today || 0);
+
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-[#f4f8f5]">
       <Navbar tickerProducts={allProducts} />
 
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-8">
-        {/* Back Link */}
-        <div className="flex items-center justify-between">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-emerald-700 transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>হোম পেজে ফিরে যান</span>
+      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+        {/* Breadcrumb matching Screenshot 5 */}
+        <nav className="text-xs sm:text-sm text-slate-500 font-medium flex items-center gap-2">
+          <Link href="/" className="hover:text-emerald-700 transition-colors">
+            হোম
           </Link>
-
-          {product.category && (
+          <span>&gt;</span>
+          {product.category ? (
             <Link
               href={`/category/${product.category}`}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-bold border border-emerald-100 hover:bg-emerald-100 transition-colors"
+              className="hover:text-emerald-700 transition-colors"
             >
-              <span>{product.categoryIcon || '📁'}</span>
-              <span>{product.categoryNameBn || product.category}</span>
+              {product.categoryNameBn || product.category}
             </Link>
+          ) : (
+            <span>পণ্য</span>
           )}
-        </div>
+          <span>&gt;</span>
+          <span className="text-slate-800 font-semibold">{product.nameBn}</span>
+        </nav>
 
-        {/* 1. Top Summary Header */}
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-100 shadow-xs">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-            <div className="flex items-start gap-4 sm:gap-6">
-              {/* Product Large Emoji Icon */}
-              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-emerald-50/80 border border-emerald-100 flex items-center justify-center text-4xl sm:text-5xl shadow-xs flex-shrink-0">
-                <span>{product.image || product.categoryIcon || '🛒'}</span>
-              </div>
-
-              {/* Title & Description */}
-              <div className="space-y-2">
-                <div className="flex flex-wrap items-center gap-2.5">
-                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight">
-                    {product.nameBn}
-                  </h1>
-                  <span
-                    className={`inline-flex items-center gap-1 text-xs sm:text-sm font-bold px-3 py-1 rounded-full border ${
-                      isUp
-                        ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                        : isDown
-                        ? 'bg-rose-50 text-rose-700 border-rose-200'
-                        : 'bg-slate-50 text-slate-600 border-slate-200'
-                    }`}
-                  >
-                    {formatBanglaPct(product.change?.pct, product.change?.dir)}
+        {/* Top Product Header Card matching Screenshot 5 */}
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-emerald-50/80 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          {/* Left info */}
+          <div className="flex items-start gap-4 sm:gap-5">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-slate-100 border border-slate-200/60 flex items-center justify-center text-3xl sm:text-4xl flex-shrink-0">
+              <span>{product.image || product.categoryIcon || '🍚'}</span>
+            </div>
+            <div className="space-y-1">
+              <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                {product.nameBn}
+              </h1>
+              <p className="text-xs sm:text-sm text-slate-500 font-medium">
+                {formatBanglaUnit(product.unit)} • {product.categoryNameBn || product.category}
+              </p>
+              <p className="text-xs sm:text-sm text-slate-600 font-medium pt-1">
+                {priceDiff > 0 ? (
+                  <span className="text-emerald-700 font-semibold">
+                    গতকালের তুলনায় আজ দাম বেড়েছে + {toBanglaNumber(priceDiff)} টাকা
                   </span>
-                </div>
-
-                <p className="text-sm text-slate-500 font-medium leading-relaxed">
-                  আজকের জাতীয় বাজার দর ও প্রধান পাইকারি ও খুচরা বাজারের মূল্য বিশ্লেষণ।
-                </p>
-
-                <div className="flex flex-wrap items-center gap-2 pt-1">
-                  <span className="text-xs font-semibold px-2.5 py-1 bg-slate-100 text-slate-700 rounded-lg">
-                    {formatBanglaUnit(product.unit)}
+                ) : priceDiff < 0 ? (
+                  <span className="text-rose-700 font-semibold">
+                    গতকালের তুলনায় আজ দাম কমেছে - {toBanglaNumber(Math.abs(priceDiff))} টাকা
                   </span>
-                  <span className="text-xs font-semibold px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-lg">
-                    আজকের গড়: {formatBanglaPrice(product.today)}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Today's Price Big Card */}
-            <div className="w-full md:w-auto bg-gradient-to-br from-emerald-600 to-emerald-800 text-white p-5 rounded-2xl shadow-md text-center md:text-right min-w-[200px]">
-              <span className="text-xs font-medium text-emerald-100 block">আজকের জাতীয় দর</span>
-              <span className="text-2xl sm:text-3xl font-black tracking-tight block my-1">
-                {formatBanglaPrice(product.today)}
-              </span>
-              <span className="text-xs text-emerald-100 font-medium">
-                {formatBanglaUnit(product.unit)}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* 2. Price Summary Cards (Min, Avg, Max) */}
-        <div>
-          <h2 className="text-lg sm:text-xl font-black text-slate-900 mb-4 flex items-center gap-2">
-            <Scale className="w-5 h-5 text-emerald-600" />
-            <span>মূল্য বিশ্লেষণ সারাংশ</span>
-          </h2>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
-            {/* Minimum Price */}
-            <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-xs hover:border-emerald-200 transition-colors">
-              <span className="text-xs font-bold text-slate-400 block uppercase tracking-wider">
-                সর্বনিম্ন দাম
-              </span>
-              <div className="mt-2 flex items-baseline gap-2">
-                <span className="text-2xl sm:text-3xl font-black text-emerald-600">
-                  {formatBanglaPrice(calculatedMin)}
-                </span>
-              </div>
-              <span className="text-xs text-slate-500 mt-1 block">
-                বিভিন্ন বাজারের সর্বনিম্ন রেকর্ড
-              </span>
-            </div>
-
-            {/* Average Price */}
-            <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-xs hover:border-blue-200 transition-colors">
-              <span className="text-xs font-bold text-slate-400 block uppercase tracking-wider">
-                গড় বাজার দর
-              </span>
-              <div className="mt-2 flex items-baseline gap-2">
-                <span className="text-2xl sm:text-3xl font-black text-blue-600">
-                  {formatBanglaPrice(calculatedAvg)}
-                </span>
-              </div>
-              <span className="text-xs text-slate-500 mt-1 block">
-                সারাদেশের গড় হিসাব
-              </span>
-            </div>
-
-            {/* Maximum Price */}
-            <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-xs hover:border-rose-200 transition-colors">
-              <span className="text-xs font-bold text-slate-400 block uppercase tracking-wider">
-                সর্বোচ্চ দাম
-              </span>
-              <div className="mt-2 flex items-baseline gap-2">
-                <span className="text-2xl sm:text-3xl font-black text-rose-600">
-                  {formatBanglaPrice(calculatedMax)}
-                </span>
-              </div>
-              <span className="text-xs text-slate-500 mt-1 block">
-                বিভিন্ন বাজারের সর্বোচ্চ সীমা
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Historical Price Comparison Bar */}
-        {(product.yesterday || product.lastWeek || product.lastMonth) && (
-          <div className="bg-emerald-50/50 rounded-2xl p-5 border border-emerald-100">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-emerald-900 mb-3 flex items-center gap-1.5">
-              <Calendar className="w-4 h-4 text-emerald-700" />
-              <span>পূর্ববর্তী বাজার দর তুলনা</span>
-            </h3>
-            <div className="grid grid-cols-3 gap-2 sm:gap-4 text-center">
-              <div className="bg-white p-3 rounded-xl border border-emerald-100/80">
-                <span className="text-xs text-slate-500 block">গতকাল</span>
-                <span className="text-base sm:text-lg font-bold text-slate-800">
-                  {formatBanglaPrice(product.yesterday || product.today)}
-                </span>
-              </div>
-              <div className="bg-white p-3 rounded-xl border border-emerald-100/80">
-                <span className="text-xs text-slate-500 block">গত সপ্তাহ</span>
-                <span className="text-base sm:text-lg font-bold text-slate-800">
-                  {formatBanglaPrice(product.lastWeek || product.today)}
-                </span>
-              </div>
-              <div className="bg-white p-3 rounded-xl border border-emerald-100/80">
-                <span className="text-xs text-slate-500 block">গত মাস</span>
-                <span className="text-base sm:text-lg font-bold text-slate-800">
-                  {formatBanglaPrice(product.lastMonth || product.today)}
-                </span>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* 3. বাজারভিত্তিক আজকের দাম (Market Breakdown) */}
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-100 shadow-xs space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
-            <div>
-              <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
-                <Building2 className="w-5 h-5 text-emerald-600" />
-                <span>বাজারভিত্তিক আজকের দাম</span>
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
-                বিভাগ ও বাজার ভেদে পণ্যের মূল্যের তারতম্য
+                ) : (
+                  <span>গতকালের তুলনায় আজকের দাম অপরিবর্তিত</span>
+                )}
               </p>
             </div>
-
-            {/* Division Filters */}
-            {divisions.length > 1 && (
-              <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
-                {divisions.map((div) => (
-                  <button
-                    key={div}
-                    onClick={() => setSelectedDivision(div)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
-                      selectedDivision === div
-                        ? 'bg-emerald-600 text-white shadow-xs'
-                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                    }`}
-                  >
-                    {div === 'all' ? 'সকল বিভাগ' : div}
-                  </button>
-                ))}
-              </div>
-            )}
           </div>
 
-          {/* Markets Grid/Cards */}
-          {filteredMarkets.length === 0 ? (
-            <p className="text-center text-sm text-slate-500 py-6">
-              নির্বাচিত বিভাগের জন্য কোনো বাজারের তথ্য পাওয়া যায়নি।
-            </p>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredMarkets.map((marketItem, idx) => (
-                <div
-                  key={idx}
-                  className="p-4 rounded-2xl bg-slate-50/70 border border-slate-100 hover:border-emerald-200 hover:bg-white transition-all shadow-2xs"
-                >
-                  <div className="flex items-start justify-between gap-2 mb-3">
-                    <div>
-                      <h4 className="font-bold text-slate-900 text-base flex items-center gap-1.5">
-                        <MapPin className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                        <span>{marketItem.market}</span>
-                      </h4>
-                      <span className="text-xs font-semibold text-slate-500 ml-5 block">
-                        বিভাগ: {marketItem.division}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-200/60 text-xs">
-                    <div className="bg-white p-2.5 rounded-xl border border-slate-100">
-                      <span className="text-slate-400 block font-medium">ন্যূনতম</span>
-                      <span className="font-bold text-emerald-700 text-sm">
-                        {formatBanglaPrice(marketItem.min)}
-                      </span>
-                    </div>
-                    <div className="bg-white p-2.5 rounded-xl border border-slate-100">
-                      <span className="text-slate-400 block font-medium">সর্বোচ্চ</span>
-                      <span className="font-bold text-rose-700 text-sm">
-                        {formatBanglaPrice(marketItem.max)}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
+          {/* Right Large Price Box matching Screenshot 5 */}
+          <div className="w-full md:w-auto bg-[#f8faf9] border border-slate-200/80 rounded-2xl p-4 sm:p-5 text-center min-w-[170px]">
+            <span className="text-xs font-semibold text-slate-500 block">আজকের দাম</span>
+            <span className="text-3xl sm:text-4xl font-black text-slate-900 block my-1">
+              {toBanglaNumber(product.today)}
+            </span>
+            <span className="text-xs font-medium text-slate-500 block">
+              টাকা / {product.unit === 'kg' ? 'কেজি' : product.unit === 'liter' ? 'লিটার' : 'একক'}
+            </span>
+            <div className="mt-2">
+              <span
+                className={`inline-flex items-center text-xs font-bold px-2 py-0.5 rounded ${
+                  isUp
+                    ? 'text-emerald-700 bg-emerald-100'
+                    : isDown
+                    ? 'text-rose-700 bg-rose-100'
+                    : 'text-slate-600 bg-slate-200'
+                }`}
+              >
+                {formatBanglaPct(product.change?.pct, product.change?.dir)}
+              </span>
             </div>
-          )}
+          </div>
+        </div>
+
+        {/* Section 2: দামের সারসংক্ষেপ matching Screenshot 5 */}
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-emerald-50/80 shadow-sm space-y-4">
+          <h2 className="text-lg font-bold text-slate-900">
+            দামের সারসংক্ষেপ
+          </h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {/* Minimum */}
+            <div className="bg-[#fbfdfc] rounded-2xl p-5 border border-slate-200/80">
+              <span className="text-xs font-semibold text-slate-500 block">সর্বনিম্ন দাম</span>
+              <div className="text-2xl font-black text-emerald-600 my-1">
+                {formatBanglaPrice(calculatedMin)}
+              </div>
+              <span className="text-xs text-slate-500 font-medium">
+                {minMarket ? `সবচেয়ে কম: ${minMarket.market}` : 'সবচেয়ে কম বাজার দর'}
+              </span>
+            </div>
+
+            {/* Maximum */}
+            <div className="bg-[#fbfdfc] rounded-2xl p-5 border border-slate-200/80">
+              <span className="text-xs font-semibold text-slate-500 block">সর্বোচ্চ দাম</span>
+              <div className="text-2xl font-black text-rose-600 my-1">
+                {formatBanglaPrice(calculatedMax)}
+              </div>
+              <span className="text-xs text-slate-500 font-medium">
+                {maxMarket ? `সবচেয়ে বেশি: ${maxMarket.market}` : 'সবচেয়ে বেশি বাজার দর'}
+              </span>
+            </div>
+
+            {/* Average */}
+            <div className="bg-[#fbfdfc] rounded-2xl p-5 border border-slate-200/80">
+              <span className="text-xs font-semibold text-slate-500 block">গড় দাম</span>
+              <div className="text-2xl font-black text-emerald-800 my-1">
+                {formatBanglaPrice(calculatedAvg)}
+              </div>
+              <span className="text-xs text-slate-500 font-medium">
+                প্রতি {product.unit === 'kg' ? 'কেজি' : 'একক'}-এর হিসাব
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Section 3: বাজারভিত্তিক আজকের দাম Table matching Screenshot 5 */}
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-emerald-50/80 shadow-sm space-y-4">
+          <h2 className="text-lg font-bold text-slate-900">
+            বাজারভিত্তিক আজকের দাম
+          </h2>
+
+          <div className="overflow-x-auto border border-slate-200 rounded-2xl">
+            <table className="w-full text-left border-collapse text-xs sm:text-sm">
+              <thead>
+                <tr className="bg-[#f8faf9] border-b border-slate-200 text-slate-700 font-bold">
+                  <th className="py-3 px-4 sm:px-6">বাজার</th>
+                  <th className="py-3 px-4 sm:px-6 border-l border-slate-200">বিভাগ</th>
+                  <th className="py-3 px-4 sm:px-6 border-l border-slate-200 text-center">সর্বনিম্ন</th>
+                  <th className="py-3 px-4 sm:px-6 border-l border-slate-200 text-center">সর্বোচ্চ</th>
+                  <th className="py-3 px-4 sm:px-6 border-l border-slate-200 text-center">গড়</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-200">
+                {markets.map((m, idx) => {
+                  const avgVal = ((m.min + m.max) / 2).toFixed(2);
+                  const formattedAvg =
+                    avgVal.endsWith('.00')
+                      ? `${toBanglaNumber(parseInt(avgVal, 10))} টাকা`
+                      : `${toBanglaNumber(avgVal)} টাকা`;
+
+                  return (
+                    <tr
+                      key={idx}
+                      className="hover:bg-emerald-50/30 transition-colors text-slate-800"
+                    >
+                      <td className="py-3 px-4 sm:px-6 font-semibold">{m.market}</td>
+                      <td className="py-3 px-4 sm:px-6 border-l border-slate-200 text-slate-600">
+                        {m.division}
+                      </td>
+                      <td className="py-3 px-4 sm:px-6 border-l border-slate-200 text-center font-bold text-slate-800">
+                        {formatBanglaPrice(m.min)}
+                      </td>
+                      <td className="py-3 px-4 sm:px-6 border-l border-slate-200 text-center font-bold text-slate-800">
+                        {formatBanglaPrice(m.max)}
+                      </td>
+                      <td className="py-3 px-4 sm:px-6 border-l border-slate-200 text-center font-bold text-slate-900">
+                        {formattedAvg}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       </main>
 
