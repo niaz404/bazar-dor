@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🛒 বাজার দর (BazarDor)
 
-## Getting Started
+> নিত্যপ্রয়োজনীয় পণ্যের সর্বশেষ ও নির্ভরযোগ্য দৈনিক বাজারদর পর্যবেক্ষণ এবং বাজারভিত্তিক দাম বিশ্লেষণ প্ল্যাটফর্ম।
 
-First, run the development server:
+---
 
+## 📖 প্রজেক্ট পরিচিতি (Project Overview)
+
+**বাজার দর (BazarDor)** হলো একটি আধুনিক ও ইন্টারেক্টিভ ওয়েব অ্যাপ্লিকেশন, যার মাধ্যমে ব্যবহারকারীরা বাংলাদেশের চাল, ডাল, তেল, সবজি, মাছ, মাংস ও মসলাসহ সকল নিত্যপ্রয়োজনীয় পণ্যের দৈনিক বাজারমূল্য, মূল্যের পরিবর্তন (▲/▼), জাতীয় গড় এবং বিভিন্ন বিভাগের বাজারের তুলনামূলক চিত্র তাৎক্ষণিকভাবে পর্যবেক্ষণ করতে পারেন।
+
+---
+
+## 🌟 মূল বৈশিষ্ট্যসমূহ (5 Key Features)
+
+1. **📊 রিয়েলটাইম লাইভ প্রাইস ট্র্যাকার ও মার্উই ব্যানার (Live Price Ticker & Risers/Fallers)**:
+   - ওয়েবসাইটের শীর্ষে চলমান মূল্য পরিবর্তনের ইনফিনিট স্ক্রলিং স্ট্রিপ।
+   - আজকের বাজারে সবচেয়ে বেশি দাম বৃদ্ধি পাওয়া (▲ Top Risers) এবং হ্রাস পাওয়া (▼ Top Fallers) পণ্যসমূহের স্বয়ংক্রিয় ফিল্টারিং।
+
+2. **🏷️ ক্যাটাগরি ব্রাউজিং ও বাংলা সংখ্যাভিত্তিক সর্টিং (Category Browsing & Bengali Numerical Sorting - C1)**:
+   - চাল, ডাল, তেল, সবজি, মাছ, মাংস, ডিম-দুধ ও মসলা ক্যাটাগরিভিত্তিক সহজ নেভিগেশন।
+   - বাংলা সংখ্যা অনুধাবন করে সর্বনিম্ন ও সর্বোচ্চ দামে নিখুঁত সর্টিং ব্যবস্থা।
+
+3. **🔒 সুরক্ষিত ও বিস্তারিত পণ্য বিশ্লেষণ পেজ (Protected Detailed Product Breakdown)**:
+   - পণ্যের জাতীয় গড়, সর্বনিম্ন ও সর্বোচ্চ মূল্যের কার্ডস।
+   - বিভাগভিত্তিক ও প্রধান বাজারভিত্তিক (যেমন কারওয়ান বাজার, সদর বাজার ইত্যাদি) বিস্তারিত মূল্য তালিকা।
+
+4. **🔐 অথেনটিকেশন ও সোশ্যাল লগইন (Authentication & Social Sign-In)**:
+   - ইমেইল/পাসওয়ার্ড এবং গুগল ও গিটহাব সোশ্যাল লগইন সমর্থন।
+   - সুরক্ষিত রুট ও টোস্ট নোটিফিকেশন অ্যালার্ট (`react-hot-toast`)।
+
+5. **👤 প্রোফাইল ম্যানেজমেন্ট ও তথ্য পরিবর্তন (User Profile & Update Information - C3)**:
+   - ব্যবহারকারীর প্রোফাইল প্রদর্শন ও তথ্য আপডেট ফর্ম (`/profile/update`), যা BetterAuth প্যাটার্ন অনুসরণ করে তাৎক্ষণিকভাবে ব্যবহারকারীর নাম পরিবর্তন ও সেশন আপডেট করে।
+
+---
+
+## 🛠️ ব্যবহৃত প্রযুক্তি (Technologies Used)
+
+- **Frontend Framework**: Next.js 16 (App Router)
+- **UI & Styling**: Tailwind CSS, Hind Siliguri Google Bengali Font
+- **Icons**: Lucide React
+- **Notifications**: React Hot Toast
+- **Authentication**: BetterAuth / Custom Auth Context with Persistent Sessions
+- **Data Fetching**: REST API with Cloudflare Workers endpoint and fallback cache
+
+---
+
+## 🚀 লোকাল সেটআপ ও রান করার নিয়ম (Getting Started)
+
+### ১. ডিপেন্ডেন্সি ইন্সটল করুন:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### ২. ডেভেলপমেন্ট সার্ভার চালু করুন:
+```bash
+npm run dev
+```
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+ব্রাউজারে [http://localhost:3000](http://localhost:3000) ওপেন করে প্রজেক্টটি দেখুন।
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 📦 লাইভ ডেপ্লয়মেন্ট ও রিপোজিটরি (Deployment & Links)
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **GitHub Repository**: `https://github.com/...`
+- **Live Demo**: `https://bazardor-assignment.vercel.app`
