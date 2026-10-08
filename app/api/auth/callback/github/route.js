@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import clientPromise from '@/lib/mongodb';
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
@@ -18,7 +19,6 @@ export async function GET(request) {
   const redirectUri = `${protocol}://${host}/api/auth/callback/github`;
 
   try {
-    // 1. Exchange code for access token
     const tokenRes = await fetch('https://github.com/login/oauth/access_token', {
       method: 'POST',
       headers: {
@@ -39,7 +39,6 @@ export async function GET(request) {
       return NextResponse.redirect(new URL('/signin?error=github_auth_failed', request.url));
     }
 
-    // 2. Fetch GitHub User Profile
     const userRes = await fetch('https://api.github.com/user', {
       headers: {
         Authorization: `Bearer ${tokenData.access_token}`,
@@ -49,7 +48,6 @@ export async function GET(request) {
 
     const githubUser = await userRes.json();
 
-    // 3. Fetch user emails if email is private
     let userEmail = githubUser.email;
     if (!userEmail) {
       const emailRes = await fetch('https://api.github.com/user/emails', {
@@ -72,6 +70,28 @@ export async function GET(request) {
       image: githubUser.avatar_url || 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&w=150&q=80',
       provider: 'github'
     };
+
+    // Save/Update in MongoDB users collection
+    try {
+      const client = await clientPromise;
+      if (client) {
+        const db = client.db('bazar-dor');
+        await db.collection('users').updateOne(
+          { email: authUser.email },
+          {
+            $set: {
+              name: authUser.name,
+              image: authUser.image,
+              provider: 'github',
+              lastLogin: new Date()
+            }
+          },
+          { upsert: true }
+        );
+      }
+    } catch (dbErr) {
+      console.error('MongoDB GitHub user save error:', dbErr);
+    }
 
     const html = `
       <!DOCTYPE html>

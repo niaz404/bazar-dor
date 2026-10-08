@@ -5,14 +5,13 @@ import toast from 'react-hot-toast';
 
 const AuthContext = createContext(null);
 
-const USERS_STORAGE_KEY = 'bazardor_registered_users';
 const CURRENT_USER_KEY = 'bazardor_user';
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // পেজ লোড হলে সেভ করা ইউজার সেশন চেক করা
+  // পেজ লোড হলে সেভ করা সেশন লোড করা
   useEffect(() => {
     try {
       const saved = localStorage.getItem(CURRENT_USER_KEY);
@@ -26,7 +25,7 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  // রিয়েল ইমেইল ও পাসওয়ার্ড সাইন ইন
+  // সাইন ইন (MongoDB Backend + Local Session)
   const signIn = async ({ email, password }) => {
     setIsLoading(true);
     try {
@@ -34,50 +33,30 @@ export function AuthProvider({ children }) {
         throw new Error('অনুগ্রহ করে ইমেইল ও পাসওয়ার্ড দিন');
       }
 
-      // নিবন্ধিত ইউজারদের তালিকা চেক করা
-      let registeredUsers = [];
-      try {
-        registeredUsers = JSON.parse(localStorage.getItem(USERS_STORAGE_KEY) || '[]');
-      } catch (e) {
-        registeredUsers = [];
+      const res = await fetch('/api/auth/signin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'লগইন ব্যর্থ হয়েছে');
       }
 
-      const existingUser = registeredUsers.find(
-        (u) => u.email.toLowerCase() === email.toLowerCase().trim()
-      );
+      let loggedInUser = data.user;
 
-      let loggedInUser;
-
-      if (existingUser) {
-        // পাসওয়ার্ড ভ্যালিডেশন
-        if (existingUser.password !== password) {
-          throw new Error('ভুল পাসওয়ার্ড! অনুগ্রহ করে সঠিক পাসওয়ার্ড দিন');
-        }
-
-        loggedInUser = {
-          id: existingUser.id,
-          name: existingUser.name,
-          email: existingUser.email,
-          image: existingUser.image || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80',
-          provider: 'email'
-        };
-      } else {
-        // নতুন ইউজারের ক্ষেত্রে তাৎক্ষণিক সাইন ইন সুবিধা
+      if (!loggedInUser) {
         const namePart = email.split('@')[0];
         const formattedName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
-
         loggedInUser = {
           id: 'usr_' + Date.now(),
           name: formattedName || 'ব্যবহারকারী',
           email: email.trim(),
-          password: password,
           image: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80',
           provider: 'email'
         };
-
-        // ইউজারের তথ্য ডাটাবেজ স্টোরেজে সংরক্ষণ
-        registeredUsers.push(loggedInUser);
-        localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(registeredUsers));
       }
 
       setUser(loggedInUser);
@@ -92,7 +71,7 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // রিয়েল অ্যাকাউন্ট রেজিস্ট্রেশন (Sign Up)
+  // সাইন আপ (MongoDB Backend + User Creation)
   const signUp = async ({ name, email, password }) => {
     setIsLoading(true);
     try {
@@ -104,33 +83,17 @@ export function AuthProvider({ children }) {
         throw new Error('পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে');
       }
 
-      let registeredUsers = [];
-      try {
-        registeredUsers = JSON.parse(localStorage.getItem(USERS_STORAGE_KEY) || '[]');
-      } catch (e) {
-        registeredUsers = [];
+      const res = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'নিবন্ধন ব্যর্থ হয়েছে');
       }
-
-      const isAlreadyRegistered = registeredUsers.some(
-        (u) => u.email.toLowerCase() === email.toLowerCase().trim()
-      );
-
-      if (isAlreadyRegistered) {
-        throw new Error('এই ইমেইল দিয়ে ইতিমধ্যে একটি অ্যাকাউন্ট রয়েছে');
-      }
-
-      const newUser = {
-        id: 'usr_' + Date.now(),
-        name: name.trim(),
-        email: email.trim().toLowerCase(),
-        password: password,
-        image: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80',
-        createdAt: new Date().toISOString(),
-        provider: 'email'
-      };
-
-      registeredUsers.push(newUser);
-      localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(registeredUsers));
 
       toast.success('নিবন্ধন সফল হয়েছে! এখন সাইন ইন করুন।');
       return { success: true };
@@ -142,7 +105,7 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // সোশ্যাল সাইন ইন (গুগল ও গিটহাব OAuth)
+  // সোশ্যাল সাইন ইন (গুগল ও গিটহাব)
   const signInWithSocial = async (provider, redirectPath = '/') => {
     const prov = provider.toLowerCase();
     if (prov === 'google') {
@@ -155,21 +118,20 @@ export function AuthProvider({ children }) {
     return { success: false };
   };
 
-  // ইউজার প্রোফাইল তথ্য আপডেট (Challenge C3)
+  // ইউজার প্রোফাইল তথ্য আপডেট (MongoDB + State)
   const updateUser = async ({ name }) => {
     if (!user) return { success: false };
 
     try {
+      await fetch('/api/auth/update-user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: user.email, name })
+      });
+
       const updatedUser = { ...user, name: name.trim() };
       setUser(updatedUser);
       localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(updatedUser));
-
-      // রেজিস্টার্ড ইউজার তালিকাতেও নাম আপডেট করা
-      let registeredUsers = JSON.parse(localStorage.getItem(USERS_STORAGE_KEY) || '[]');
-      registeredUsers = registeredUsers.map((u) =>
-        u.email === user.email ? { ...u, name: name.trim() } : u
-      );
-      localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(registeredUsers));
 
       toast.success('তথ্য সফলভাবে আপডেট করা হয়েছে!');
       return { success: true };

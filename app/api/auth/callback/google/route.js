@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import clientPromise from '@/lib/mongodb';
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
@@ -18,7 +19,6 @@ export async function GET(request) {
   const redirectUri = `${protocol}://${host}/api/auth/callback/google`;
 
   try {
-    // 1. Exchange code for access token
     const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -37,7 +37,6 @@ export async function GET(request) {
       return NextResponse.redirect(new URL('/signin?error=google_auth_failed', request.url));
     }
 
-    // 2. Fetch real Google User Info
     const userRes = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
       headers: { Authorization: `Bearer ${tokenData.access_token}` }
     });
@@ -56,7 +55,28 @@ export async function GET(request) {
       provider: 'google'
     };
 
-    // Return HTML page that saves user into localStorage and redirects
+    // Save/Update in MongoDB users collection
+    try {
+      const client = await clientPromise;
+      if (client) {
+        const db = client.db('bazar-dor');
+        await db.collection('users').updateOne(
+          { email: authUser.email },
+          {
+            $set: {
+              name: authUser.name,
+              image: authUser.image,
+              provider: 'google',
+              lastLogin: new Date()
+            }
+          },
+          { upsert: true }
+        );
+      }
+    } catch (dbErr) {
+      console.error('MongoDB OAuth user save error:', dbErr);
+    }
+
     const html = `
       <!DOCTYPE html>
       <html>
